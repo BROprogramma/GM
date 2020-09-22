@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:dsgm="http://www.broservices.nl/xsd/dsgm/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0"
+           xmlns:gmncom="http://www.broservices.nl/xsd/gmncommon/1.0"
+           xmlns:gml="http://www.opengis.net/gml/3.2"
+           xmlns:gmlsf="http://www.opengis.net/gmlsf/2.0"
+           targetNamespace="http://www.broservices.nl/xsd/dsgm/1.0"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="0.1.0">
+    <xs:annotation>
+        <xs:appinfo source="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd">
+            <gmlsf:ComplianceLevel>0</gmlsf:ComplianceLevel>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <!--
+    <xs:import namespace="http://www.broservices.nl/xsd/brocommon/3.0" schemaLocation="https://schema.broservices.nl/xsd/brocommon/3.0/brocommon.xsd"/>
+    <xs:import namespace="http://www.broservices.nl/xsd/gmncommon/1.0" schemaLocation="https://schema.broservices.nl/xsd/gmncommon/1.0/gmncommon.xsd"/>
+    <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd"/>
+    -->
+    <xs:import namespace="http://www.broservices.nl/xsd/brocommon/3.0" schemaLocation="brocommon.xsd"/>
+    <xs:import namespace="http://www.broservices.nl/xsd/gmncommon/1.0" schemaLocation="gmncommon.xsd"/>
+    <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml-profile.xsd"/>
+
+    <xs:element name="parseFault" type="brocom:ParseFaultType" />
+
+    <xs:element name="dispatchCharacteristicsRequest"
+               type="dsgm:DispatchCharacteristicsRequestType">
+        <xs:annotation>
+            <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Het bericht dispatchCharacteristicsRequest is een specialisatie van AbstractDispatchCharacteristicsRequest in de package brocommon, waaraan het een registratieobject afhankelijk element criteria toevoegt.</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="DispatchCharacteristicsRequestType">
+        <xs:complexContent>
+            <xs:extension base="brocom:AbstractDispatchCharacteristicsRequestType">
+                <xs:sequence>
+                    <xs:element minOccurs="1"
+                           maxOccurs="1"
+                           name="criteria"
+                           nillable="false"
+                           type="dsgm:GM_CriteriaSetType">
+                        <xs:annotation>
+                            <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: De afzonderlijke kenmerken waaraan de registratieobjecten moeten voldoen.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="dispatchCharacteristicsResponse"
+               type="dsgm:DispatchCharacteristicsResponseType">
+        <xs:annotation>
+            <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Het bericht DispatchCharacteristicsResponse is een specialisatie van DispatchResponse in de package brocommon, waaraan het een attribuut numberOfDocuments en een associatie relatie naar AbstractRegistrationObject in de package brocommon toevoegt.</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="DispatchCharacteristicsResponseType">
+        <xs:complexContent>
+            <xs:extension base="brocom:DispatchResponseType">
+                <xs:sequence>
+                    <xs:element name="numberOfDocuments"
+                           type="xs:integer"
+                           minOccurs="0"
+                           maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Het aantal registratieobjecten dat voldoet aan de criteria (kenmerken) in het uitgifteverzoek.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0"
+                           maxOccurs="unbounded"
+                           name="dispatchDocument"
+                           nillable="false"
+                           type="brocom:AbstractRegistrationObjectPropertyType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="GM_C"
+               type="dsgm:GM_CType"
+               substitutionGroup="brocom:AbstractCharacteristics">
+        <xs:annotation>
+            <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Het uitgiftedocument GM-C bevat de standaard kengegevens van GMW en daarnaast de specifieke kengegevens met betrekking tot gerelateerde registratieobjecten uit het grondwatermonitoringdomein.</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="GM_CType">
+        <xs:complexContent>
+            <xs:extension base="brocom:AbstractCharacteristicsType">
+                <xs:sequence>
+                    <xs:element minOccurs="1"
+                           maxOccurs="unbounded"
+                           name="monitoringTube"
+                           nillable="false"
+                           type="dsgm:MonitoringTubeType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="GM_CPropertyType">
+        <xs:sequence minOccurs="1">
+            <xs:element ref="dsgm:GM_C"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GroundwaterLevelDossierType">
+        <xs:sequence>
+            <xs:element name="broId"
+                     type="brocom:RegistrationObjectCodeType"
+                     minOccurs="1"
+                     maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Unieke aanduiding van een registratieobject in de basisregistratie ondergrond.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GroundwaterMonitoringNetworkType">
+        <xs:sequence>
+            <xs:element name="broId"
+                     type="brocom:RegistrationObjectCodeType"
+                     minOccurs="1"
+                     maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Unieke aanduiding van een registratieobject in de basisregistratie ondergrond.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="deliverycontext"
+                     minOccurs="1"
+                     maxOccurs="1"
+                     type="gmncom:DeliveryContextType">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <CodeListName>DeliveryContext</CodeListName>
+                        <CodeListURI/>
+                    </xs:appinfo>
+                    <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: De rechtsgrond op basis waarvan, of bij afwezigheid daarvan, de activiteit naar aanleiding waarvan, het betreffende gegeven is aangeleverd aan de basisregistratie ondergrond.
+Explanation: De wetgever stipuleert dat het gegeven moet zijn vastgelegd om inzicht te geven in de relatie met de taken van een bestuursorgaan. Het gegeven geeft inzicht in de maatschappelijke betekenis van de informatie. Het betreft hier de huidige rechtsgrond op basis waarvan de monitoring plaatsvindt. Aangezien de wetgeving kan veranderen gedurende de periode van monitoren, terwijl het monitoringdoel gelijk kan blijven, geldt dat de rechtsgrond gedurende de levensduur van het grondwatermonitoringnet kan veranderen. Het kader aanlevering van een grondwatermonitoringnet kan anders zijn dan het kader aanlevering van een grondwatermonitoringput waarnaar vanuit een meetpunt in het grondwatermonitoringnet wordt verwezen.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GroundwaterAnalysisReportType">
+        <xs:sequence>
+            <xs:element name="broId"
+                     type="brocom:RegistrationObjectCodeType"
+                     minOccurs="1"
+                     maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Unieke aanduiding van een registratieobject in de basisregistratie ondergrond.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GM_CriteriaSetType">
+        <xs:complexContent>
+            <xs:extension base="brocom:CriteriaSetType">
+                <xs:sequence>
+                    <xs:element name="broId"
+                           type="brocom:RegistrationObjectCodeType"
+                           minOccurs="0"
+                           maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: De BRO-ID van de grondwatermonitoringput waarvan de kengegevens in de samenhang van het grondwatermonitoring domein worden opgevraagd.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="MonitoringTubeType">
+        <xs:sequence>
+            <xs:element name="tubeNumber" type="xs:integer" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: Het nummer dat door of voor de bronhouder wordt gebruikt om de monitoringbuis in de grondwatermonitoringput te identificeren.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0"
+                     maxOccurs="unbounded"
+                     name="groundwaterMonitoringNetwork"
+                     nillable="false"
+                     type="dsgm:GroundwaterMonitoringNetworkType">
+                <xs:annotation>
+                    <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: De kengegevens van een grondwatermonitoringnet.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0"
+                     maxOccurs="unbounded"
+                     name="groundwaterAnalysisReport"
+                     nillable="false"
+                     type="dsgm:GroundwaterAnalysisReportType">
+                <xs:annotation>
+                    <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: De kengegevens van een grondwatersamenstellingsonderzoek.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0"
+                     maxOccurs="unbounded"
+                     name="groundwaterLevelDossier"
+                     nillable="false"
+                     type="dsgm:GroundwaterLevelDossierType">
+                <xs:annotation>
+                    <xs:documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: De kengegevens van een grondwaterstandonderzoek.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

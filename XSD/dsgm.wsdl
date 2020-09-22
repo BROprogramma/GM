@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="dsgm"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+                  xmlns:msg="http://www.broservices.nl/xsd/dsgm/1.0"
+                  xmlns:tns="http://www.broservices.nl/wsdl/dsgm/1.0"
+                  targetNamespace="http://www.broservices.nl/wsdl/dsgm/1.0">
+
+    <wsdl:documentation>
+    Deze WSDL beschrijft de webservice voor uitgifte van geologisch booronderzoek
+    </wsdl:documentation>
+
+    <wsdl:types>
+        <xsd:schema xmlns:tns="http://www.broservices.nl/wsdl/dsgm/1.0" targetNamespace="http://www.broservices.nl/wsdl/dsgm/1.0">
+            <!--
+            <xsd:import namespace="http://www.broservices.nl/xsd/dsgm/1.0" schemaLocation="https://schema.broservices.nl/xsd/dsgm/1.0/dsgm-messages.xsd"/>
+             -->
+            <xsd:import namespace="http://www.broservices.nl/xsd/dsgm/1.0" schemaLocation="dsgm-messages.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="dispatchCharacteristicsRequest">
+        <wsdl:part name="request" element="msg:dispatchCharacteristicsRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="dispatchCharacteristicsResponse">
+        <wsdl:part name="response" element="msg:dispatchCharacteristicsResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="parseSoapFault">
+        <wsdl:part name="parseFault" element="msg:parseFault"/>
+    </wsdl:message>
+
+    <wsdl:portType name="dsgm">
+        <wsdl:operation name="dispatchCharacteristics">
+            <wsdl:input message="tns:dispatchCharacteristicsRequest" wsam:Action="http://www.broservices.nl/wus/dsgm/dispatchCharacteristicsRequest"/>
+            <wsdl:output message="tns:dispatchCharacteristicsResponse" wsam:Action="http://www.broservices.nl/wus/dsgm/dispatchCharacteristicsResponse"/>
+            <wsdl:fault name="parsefault" message="tns:parseSoapFault" wsam:Action="http://www.broservices.nl/wus/dsgm/parseSoapFault"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="dsgm_SOAP" type="tns:dsgm">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="dispatchCharacteristics">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="parsefault">
+                <soap:fault name="parsefault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="dsgm">
+        <wsdl:port name="dsgm_SOAP" binding="tns:dsgm_SOAP">
+            <soap:address location="REPLACE_WITH_ACTUAL_URL"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
